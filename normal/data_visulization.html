@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>data visulization</title>
+	<style type="text/css">
+		.data{
+			height:50px;
+			margin:4px 0px;
+			position: absolute;
+		}
+		.btn{
+			background-color:#4d80e6;
+			border-radius: 20px;
+			position: fixed;
+			top:90%;
+			left: 80%;
+		}
+	</style>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript">
+		function randomColor() {
+			st =(0^(Math.random()*0xfff)).toString(16)
+			return "#"+st+(st.length<3?(3-st.length)*"5":"")
+		}
+		function calcWidth(obj) {
+			if (obj.acc==undefined){obj.acc = Math.random()}
+			if (obj.val==undefined){obj.val = 0^Math.random()*800 }
+			obj.val *= 1+obj.acc
+			return obj.val/sum * 800 ;//val /sum of max width
+		}
+
+		function render() {//rendering the dates
+			dates.sort((a,b)=>{return b.val-a.val})
+			sum = dates[0].val
+			for (let i=0;i<dates.length;i++) {//move the obj to right position 
+				obj = $('#'+(dates[i].id))
+				obj.animate({width:calcWidth(dates[i])},500);
+				obj.animate({top:i*55},Math.abs(obj.position().top/55-i)*100);
+			}
+		}	
+		var dates = [];
+		var sum =1000;
+		$().ready(
+			()=>{
+				console.log("load jquery succees.")
+				for (var i = 0; i < 10; i++) {
+					dates.push({'id':'data'+i })
+					$("body").append($("<div></div>").addClass("data").attr({"id":"data"+i}).css({"background-color":randomColor(),
+						"width":calcWidth(dates[i])+"px",
+						'top':i*55+'px'}))
+				}//make the random datas
+				// sort the datas
+				
+				// for (var i =0;i<10;i++) {
+				// 	dates.push({'width':parseInt($("#data"+i).css("width")),'id':'data'+i })
+				// }
+				var hRender = setInterval(render,500);
+				$("#stop").on("click",()=>{clearInterval(hRender)})
+				$("#br").on("click",()=>{
+					for(let obj of dates){
+						obj.acc = Math.random();
+					}
+				})
+
+			})
+	</script>
+</head>
+<body>
+	<button class="btn" id='stop'>stop~~~~~~~~~~~~~~~</button>
+	<button class="btn" id="br">random</button>
+</body>
+</html>
