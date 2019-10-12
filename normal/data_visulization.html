@@ -27,7 +27,7 @@
 			//max width is 800 ,so max item.val is 1 ,the other is val / max ratio
 			if (obj.acc==undefined){obj.acc = Math.random()}
 			if (obj.val==undefined){obj.val = 0^Math.random()*800 }
-			obj.val *= 1+obj.acc
+			obj.val += 800*obj.acc
 			return obj.val/sum * 800 ;//val /sum of max width
 		}
 
