@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<canvas id="tt" style="border:solid #555 1px;"></canvas>
+<script type="text/javascript">
+	function draw(datas,ctx,fs='#ff0000') {
+		let [sX,sY] = datas[0]
+		ctx.beginPath()
+		ctx.moveTo(sX,sY)
+		for(let val of datas.slice(1)){
+			ctx.lineTo(val[0],val[1])
+		}
+		ctx.lineTo(sX,sY)//close the ploygon
+		//fill is with style
+		ctx.fillStyle=fs
+		ctx.fill()
+		ctx.closePath()
+	}
+	function rotate(datas,ctx,angle,fs='#00ff00'){
+		let result =[]
+		let the= 2*Math.PI/360*angle
+		let rx,ry,x,y,
+			cx=200,
+			cy=200
+			//cx,cy rotate center 
+		for(let val of datas){
+			[x,y] =val
+			x = x - cx 
+			y = y - cy
+			//change to new coordinate
+			rx = (x*Math.cos(the)-y*Math.sin(the))+cx //+cx,cy back to before coordinate
+			ry = (x*Math.sin(the) + y*Math.cos(the))+cy
+			result.push([rx,ry])
+		}
+		
+		draw(result,ctx,fs)
+	}
+	function area(p0,p1,p2) {
+		are = p0[0]*p1[1] + p1[0]*p2[1] + p2[0]*p0[1] - p1[0]*p0[1] - p2[0]*p1[1] - p0[0]*p2[1]
+		return Math.abs(are/2)
+	}
+	function center(data){
+		let coner = data.length
+		if(coner<2){console.log('Not a polyment');return 0}
+		if(coner==2){console.log('this is a circle');return data[0]}
+		let sum_x=0 ,sum_y=0 ,sum_are=0,are
+		for(let i =1 ; i <= coner-2;i++){
+			are = area(data[0],data[i],data[i+1])
+			sum_x += (data[0][0]+data[i+1][0]+data[i][0])*are
+			sum_y += (data[0][1]+data[i+1][1]+data[i][1])*are
+			sum_are +=  are
+		}
+		let result = [sum_x/sum_are/3,sum_y/sum_are/3]
+		return result
+	}
+	var c = document.getElementById('tt')
+	c.height=800
+	c.width=600
+	var ctx = c.getContext('2d')
+	var data = [[100,100],[200,200],[300,100]]
+	center(data)
+	draw(data,ctx)
+	rotate(data,ctx,90)
+	rotate(data,ctx,180,'#ff0000')
+	rotate(data,ctx,-90)
+</script>
+</body>
+</html>

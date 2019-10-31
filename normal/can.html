@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript">
+		var gID;
+		function cancel() {
+			cancelAnimationFrame(gID)
+		}
+		function restart(){
+			aa = new ploy(pts,ctx)
+			aa.go()
+		}
+	</script>
+</head>
+<body>
+<button onclick="cancel()" style="float:right;">CANCEL</button>
+<button onclick="restart()">restart</button>
+<canvas id="contain" style="border:1px solid #555"></canvas>
+<script type="text/javascript">
+	///////////////function segament
+	function area(p0,p1,p2) {
+		are = p0[0]*p1[1] + p1[0]*p2[1] + p2[0]*p0[1] - p1[0]*p0[1] - p2[0]*p1[1] - p0[0]*p2[1]
+		return Math.abs(are/2)
+	}
+	function getcenter(data){
+		let coner = data.length
+		if(coner<2){console.log('Not a polyment');return 0}
+		if(coner==2){console.log('this is a circle');return data[0]}
+		let sum_x=0 ,sum_y=0 ,sum_are=0,are
+		for(let i =1 ; i <= coner-2;i++){
+			are = area(data[0],data[i],data[i+1])
+			sum_x += (data[0][0]+data[i+1][0]+data[i][0])*are
+			sum_y += (data[0][1]+data[i+1][1]+data[i][1])*are
+			sum_are +=  are
+		}
+		let result = [sum_x/sum_are/3,sum_y/sum_are/3]
+		return result
+	}	
+	class ploy {
+		constructor(data,ctx){
+			this.speed =[60,20] //speed 
+			this.rot = 180 //angular speed 
+			this.acc = [0,GRAVITY,0] //acceleration x,y and w:angular momenturm
+			this.pts = data //point of ploy
+			this.ctx = ctx
+			this.cum =[0,0]
+			this.rt =  getcenter(data)
+		}
+		next(){
+			if(Math.abs(this.speed[0])<ACCUTE & Math.abs(this.speed[1])< ACCUTE){console.log('stop');return 0}
+			// [this.speed,this.rot]=check(this.pts,this.speed,this.rot,this.acc,DAMPING)
+			this.speed = [this.speed[0]+(this.acc[0]*TIME),this.speed[1]+(this.acc[1]*TIME)]
+			this.rot += this.acc[2]*TIME
+			this.pts = this.move(this.pts)
+		}
+		move(data) {
+		// acc === acceleration x,y and w ,w is angular momenturm
+		//rot == rotation  which means angular speed ,default is clockwise ,negative is  anticlockwise .
+		//return calculate data :result 
+			// var data = this.pts
+			let result =[]
+			let [ax,ay,aw] = this.acc
+			let [x,y] = this.speed
+			let rot = this.rot + aw*TIME
+			let mx,my
+			[mx,my] = this.check(data,0.65)
+			for(let val of data){
+				let rx = val[0]+mx
+				let ry = val[1]+my
+				result.push([rx,ry])
+			}
+			result = this.rotate(result,rot*TIME,this.rt)
+			return result
+		}
+		check(data,damping=1,border){
+			let [left,top,right,bottom] = border==undefined?[0,0,Cwidth,Cheight]:border
+			let [x,y] = this.speed
+			let [ax,ay,aw] = this.acc
+			let Rx=x,Ry=y,Rrot=this.rot,hitted =0
+			let mx = x*TIME+(ax*TIME*TIME/2)
+			let my = y*TIME+(ay*TIME*TIME/2)
+			let center = []
+			let hit_pt = []
+			for(let val of data){//hit the border and re
+				if(val[0]+mx<=left | val[0]+mx>=right){
+					Rx = Math.floor(x * -1 * damping*10)/10
+					mx = (val[0]+mx)<=left?Math.abs(val[0]):right - val[0]
+					hit_pt =val
+					hitted = 1
+				}
+				if(val[1]+my<=top | val[1]+my>=bottom){
+					Ry = Math.floor(y * -1 * damping*10)/10
+					my = (val[1]+my)<=top?Math.abs(val[1]):bottom - val[1]
+					hit_pt = val
+					hitted = 2
+				}
+			}
+			if(hitted){
+				this.rot = hitted==1?this.rot*-1:this.rot
+				this.rt = hit_pt
+				let cx,cy = getcenter(data)
+				
+				this.rot = cx<hit_pt[0]?Math.abs(this.rot)*-1:Math.abs(this.rot)
+				this.rot = cy<hit_pt[1]?Math.abs(this.rot):Math.abs(this.rot)*-1
+				this.rot *= 0.7
+			}
+			else{
+				this.rt = getcenter(this.pts)
+			}
+			this.speed=[Rx,Ry]
+			return [mx,my]
+		}
+		draw(fs='#ff0000'){
+		//clockwise point of ploygons from datas
+		//move to first point
+			let datas = this.pts
+			let [sX,sY] = datas[0]
+			this.ctx.beginPath()
+			this.ctx.moveTo(sX,sY)
+			for(let val of datas.slice(1)){
+				this.ctx.lineTo(val[0],val[1])
+			}
+			this.ctx.lineTo(sX,sY)//close the ploygon
+			//fill is with style
+			this.ctx.fillStyle=fs
+			this.ctx.fill()
+			this.ctx.closePath()
+		}
+		rotate(data,angle,centers){
+			let result =[]
+			let the= 2*Math.PI/360*angle
+			let [cx,cy] = centers
+			let rx,ry,x,y
+				//cx,cy rotate center 
+			for(let val of data){
+				[x,y] =val
+				x = x - cx 
+				y = y - cy
+				//change to new coordinate
+				rx = (x*Math.cos(the)-y*Math.sin(the))+cx //+cx,cy back to before coordinate
+				ry = (x*Math.sin(the) + y*Math.cos(the))+cy
+				result.push([rx,ry])
+			}
+			return result
+		
+		}
+		clear(){
+			this.ctx.clearRect(0,0,Cwidth,Cheight)
+		}
+		render(self) {
+		// body...
+		//window.webkitRequestAnimationFrame main rendering method
+		//clear the canvas
+			this.clear() 
+			//make it to the background ,so it is disppeared
+			this.next()
+			this.draw()
+			gID = window.requestAnimationFrame(()=>{this.render(this)})
+		}
+		go(self){
+			cancel()
+			gID = window.requestAnimationFrame(()=>{this.render(this)})
+			return gID
+		}
+
+
+
+	}
+
+	///////////////segment
+
+	///defined globel val
+
+	canva = document.getElementById('contain');
+	canva.height = 800
+	canva.width = 600
+	var TIME=0.017,
+		GRAVITY = 9.8*10,
+		Cheight=canva.height,
+		Cwidth=canva.width,
+		DAMPING=0.75,
+		ACCUTE=0.001
+	ctx = canva.getContext('2d')
+
+	/////test segment 
+	let pts=[[50,50],[80,80],[120,60],[150,30]]
+	var aa = new ploy(pts,ctx)
+
+	//draw a ploygons
+	
+</script>
+</body>
+</html>
