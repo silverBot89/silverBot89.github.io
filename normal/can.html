@@ -84,13 +84,14 @@
 			let hit_pt = []
 			for(let val of data){//hit the border and re
 				if(val[0]+mx<=left | val[0]+mx>=right){
-					Rx = Math.floor(x * -1 * damping*10)/10
+					Rx = Math.floor(x * -1 * 0.5* damping*10)/10
 					mx = (val[0]+mx)<=left?Math.abs(val[0]):right - val[0]
 					hit_pt =val
 					hitted = 1
 				}
 				if(val[1]+my<=top | val[1]+my>=bottom){
 					Ry = Math.floor(y * -1 * damping*10)/10
+					Rx = Math.floor(x * 0.9*10)/10
 					my = (val[1]+my)<=top?Math.abs(val[1]):bottom - val[1]
 					hit_pt = val
 					hitted = 2
@@ -103,14 +104,19 @@
 				
 				this.rot = cx<hit_pt[0]?Math.abs(this.rot)*-1:Math.abs(this.rot)
 				this.rot = cy<hit_pt[1]?Math.abs(this.rot):Math.abs(this.rot)*-1
-				this.rot *= 0.7
+				this.rot *= 0.8
 				if(hitted==2){
 					let distant = hit_pt[0]-getcenter(this.pts)[0][0]
 					if(distant=!0){
-						this.acc[2] = -1*distant * getcenter(this.pts)[1] 
-						this.rot += this.acc[2]*TIME
+						this.acc[2] = distant * getcenter(this.pts)[1] / 2
 						// console.log(this.rot)
-						this.rot = distant<0?this.rot:this.rot*-1
+						if(this.acc[1]!=0 || this.acc[0]!=0){
+							this.rot -= this.acc[2]*TIME
+							this.acc[2] *= -1
+						}
+						else{
+							this.rot += this.acc[2]*TIME
+						}
 					}
 					else{
 						this.acc[2]=0
