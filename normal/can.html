@@ -34,7 +34,7 @@
 			sum_y += (data[0][1]+data[i+1][1]+data[i][1])*are
 			sum_are +=  are
 		}
-		let result = [sum_x/sum_are/3,sum_y/sum_are/3]
+		let result = [[sum_x/sum_are/3,sum_y/sum_are/3],sum_are]
 		return result
 	}	
 	class ploy {
@@ -45,7 +45,7 @@
 			this.pts = data //point of ploy
 			this.ctx = ctx
 			this.cum =[0,0]
-			this.rt =  getcenter(data)
+			this.rt =  getcenter(data)[0]
 		}
 		next(){
 			if(Math.abs(this.speed[0])<ACCUTE & Math.abs(this.speed[1])< ACCUTE){console.log('stop');return 0}
@@ -99,14 +99,28 @@
 			if(hitted){
 				this.rot = hitted==1?this.rot*-1:this.rot
 				this.rt = hit_pt
-				let cx,cy = getcenter(data)
+				let cx,cy = getcenter(data)[0]
 				
 				this.rot = cx<hit_pt[0]?Math.abs(this.rot)*-1:Math.abs(this.rot)
 				this.rot = cy<hit_pt[1]?Math.abs(this.rot):Math.abs(this.rot)*-1
 				this.rot *= 0.7
+				if(hitted==2){
+					let distant = hit_pt[0]-getcenter(this.pts)[0][0]
+					if(distant=!0){
+						this.acc[2] = -1*distant * getcenter(this.pts)[1] 
+						this.rot += this.acc[2]*TIME
+						// console.log(this.rot)
+						this.rot = distant<0?this.rot:this.rot*-1
+					}
+					else{
+						this.acc[2]=0
+					}
+					
+				}
 			}
 			else{
-				this.rt = getcenter(this.pts)
+				this.rt = getcenter(this.pts)[0]
+				this.acc[2] = 0
 			}
 			this.speed=[Rx,Ry]
 			return [mx,my]
