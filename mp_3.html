@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>css2</title>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.js"></script>
+	<style type="text/css">
+		.contain{
+			margin:50px 0 0 50px;
+
+			width:700px;
+			display:grid;
+			grid-template-columns:repeat(3,1fr);
+			grid-gap:1em;
+		}
+		.card{
+			cursor:pointer;
+			font-size:4em;
+			text-align:center;
+			line-height:150px;
+			height:200px;
+			background:#ddd;
+			padding:10px;
+			transition:transform 0.5s ease-in-out;
+		}
+		.contain>:nth-child(odd){
+			background:#555;
+		}
+		.btn{
+			height:50px;
+			width:150px;
+			margin-left:300px;
+			border:none;
+			border-radius:50px;
+			background:lime;
+		}
+		.heart{
+			padding:2px;
+			width:20px;
+			height:20px;
+			background:red;
+			border-radius:5px;
+		}
+		.life{
+			margin-left:50px;
+		}
+		.info{
+			display:flex;
+		}
+	</style>
+</head>
+<body>
+	<div class="info">
+		<span>按顺序点击卡片</span>
+		<div class="life">生命</div>
+		<button class="btn" onclick="init()">开始</button>
+	</div>
+	<div class="contain"></div>
+	<script type="text/javascript">
+		function cardClick() {
+			var e = window.event.srcElement.id
+			let num=match[parseInt(e[e.length-1])]
+			let index = cumstom.length
+			if($('#'+e)[0].style.transform=!''){
+				$('#'+e)[0].style.transform=''
+				$('#'+e).text(num)
+			}
+			if($.inArray(num,cumstom)!=-1){return 0}
+			if(a[index]==num){
+				cumstom.push(num)
+				if(index+1>=a.length){
+					console.log('WIN')
+					setTimeout(init,1000)
+				}
+			}
+			else{
+				if(life <= 0 ){
+					init()
+				}
+				else{
+					setTimeout(()=>{$('#'+e).css('transform','rotateY(180deg)').text('')},800)
+					life--
+					$('.heart')[0].remove()
+				}
+			}
+			console.log(life)
+		}
+		 function rsa(arr,result=[]){
+		 	if(arr.length <= 1){
+		 		return result.concat(arr)
+		 	}
+ 			result = result.concat(arr.splice(parseInt(Math.random()*10)%arr.length,1))
+ 			return rsa(arr,result)
+  		}
+  		const a = [1,2,3,4,5,6,7,8,9]
+  		var match = []
+  		var cumstom = []
+  		var life = 3
+  		function init(){
+  			let b = a.slice()
+  			life = 3
+  			match = rsa(b)
+  			cumstom = []
+  			$('.card').css('transform','').on('click','')
+  			for(let i =0 ;i<a.length;i++){
+  				$('#card'+i).text(match[i])
+  			}
+  			$('.heart').remove()
+  			for(let i=0;i<life;i++){
+  				$('.life').after($('<div></div>').addClass('heart'))
+  			}
+  			setTimeout(()=>{
+  				$('.card').text('').css('transform','rotateY(180deg)').on('click',cardClick)
+  			},3000)
+  		}
+		$().ready(()=>{
+			for(let i=0;i<a.length;i++){
+				$('.contain').append($('<div></div>').attr('id','card'+i).addClass('card'))
+			}
+			init()
+		})
+	</script>
+</body>
+</html>

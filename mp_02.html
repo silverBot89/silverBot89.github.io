@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script src="https://unpkg.com/vue/dist/vue.js"></script>
+	<style type="text/css">
+		body{
+
+		}
+		.page{
+			display:flex;
+			flex-direction:column;
+		}
+		.bar{
+			padding-top:50px;
+			display:flex;
+			flex-wrap:wrap;
+			justify-content:center;
+
+		}
+		.bar >div{
+			cursor:pointer;
+		}
+		.barLogo{
+			width:100px;
+			margin-right:10px; 
+			background:linear-gradient(45deg,red,pink);
+			transform:skew(-30deg);
+			border-radius:10px;
+		}
+		.homePage{
+			flex-grow:2;
+		}
+		.nag{
+			font-size:1em;
+			border-bottom:5px solid transparent;
+			margin:0 10px 0;
+
+		}
+		.nag:hover{
+			border-bottom:2px solid blue;
+			color:#00a1d6;
+		}
+		.blockLine{
+			margin:20px 0 20px 0;
+			height:1px;
+			opacity:0.3;
+			display:flex;
+			background:#555;
+		}
+		.news{
+			display:flex;
+			flex-direction:row;
+			flex-wrap:wrap;
+			justify-content:center;
+
+		}
+		.big{
+			width:400px;
+			height:300px;
+			display:flex;
+			flex-direction:column-reverse;
+		}
+		.small{
+			display:flex;
+			flex-wrap:nowrap;
+			justify-content:center;
+			
+		}
+		.small >div{
+			width:30px;
+			height:30px;
+			border:1px solid;
+			text-align:center;
+			font-size:0.5em;
+		}
+		.small>div:hover{
+			cursor:pointer;
+		}
+		.trend{
+			margin-left:50px;
+			width:400px;
+			height:300px;
+		}
+		.trend>:first-child{
+			font-size:2em;
+			margin-left:20px;
+			color:pink;
+		}
+		.trend >div{
+			font-size:1.5em;
+			font-style:italic;
+		}
+		a{
+			text-decoration:none;
+		}
+		.main{
+			margin:auto;
+			display:flex;
+			flex-direction:row;
+			flex-wrap:wrap;
+			width:900px;
+		}
+		.main>div{
+			margin:auto;
+		}
+		.subImg{
+			border:1px solid;
+			font-size:3em;
+			position:relative;
+			width:200px;
+			height:200px;
+			float:left;
+		}
+		.foo{
+			margin-left:60%;
+
+		}
+		h2{
+			border-left:2px solid red;
+			padding-left:5px;
+		}
+		.banner{
+			position:absolute;
+			height:100px;
+			width:100vw;
+			z-index:-1000;
+			background:linear-gradient(0deg,aqua,lime);
+		}
+		.log{
+			position:fixed;
+			left:95%;
+			top:20%;
+			width:80px;
+			height:40px;
+			border-radius:50px;
+			background:linear-gradient(0deg,aqua,transparent);
+			text-align:center;
+			font-size:1em;
+			padding-top:30px;
+			font-style:italic;
+			color:#ddd;
+		}
+/*		div{
+			border:1px solid;
+		}*/
+	</style>
+	<script type="text/javascript">
+		function goHome(){
+			window.location.href=window.location.host;
+		}
+	</script>
+</head>
+<body>
+	<div class="banner"></div>
+	<div class="page">
+		<div class="bar">
+			<div class="barLogo" onClick="goHome()"></div>
+			<div class="homePage" onClick='goHome()'>主页</div>
+			<div v-for='item in nag' class="nag" >{{item}}</div>
+		</div>
+		<div class="blockLine"></div>
+		<div class="news">
+			<div class="big" v-bind:style='{background:current}'>
+				<div class="small">
+					<div id='preImg'><</div>
+					<div v-for='(img ,index) in imgs' v-on:click='current=img' v-bind:style='{background:img}'>{{img}}</div>
+					<div id='nextImag'>></div>
+				</div>
+			</div>
+			<div class="trend">
+				<span>动态</span>
+				<div v-for='(p ,text) in context'><a href='#'>{{p}}</a></div>
+			</div>
+		</div>
+		<div class="main">
+			<div v-for='(item ,index) in nag'>
+					<h2>{{item}}</h2>
+					<div class="subImg" style="background:url(logo2.jpg);"></div>
+					<p v-for='(p, name) in context'>
+						<a href="#">{{p}}</a>
+					</p>
+			</div>
+		</div>
+		<div class="foo">
+			<span>声明</span>
+			<span>*****有限公司</span>
+			<span>联系电话 <a href="#">00-123456-000</a></span>
+			<span class="fooTime">{{getTime()}}</span>
+			<p>some information</p>
+		</div>
+	</div>
+	<div class="log" onclick="Login()"><a href="./login.html">登录</a></div>
+</body>
+<script type="text/javascript">
+	var test = new Vue({
+		el:'.page',
+		data:{
+			curentTime:'',
+			current:'yellow',
+			nag:['新闻','科技','直播','时尚','财经','健康','体育','娱乐'],
+			imgs:['green','red','blue','pink','aqua','tan','lime'],
+			context:{
+				one:'Vuex 2.0 已经发布了，但是这份指南只涵盖迁移到 1.0？',
+				two:'此外，似乎 Vuex 1.0 和 2.0 也同时发布。这是怎么回事？',
+				three:'我该用哪一个并且哪一个兼容 Vue 2.0呢？',
+				fourt:'都完全支持 Vue 1.0 和 2.0'
+			}
+
+		},
+		methods:{
+			getTime:function(){
+				let now = new Date()
+				let t= now.getFullYear()+'年'+now.getMonth()+'月'+now.getDate()+'日'
+				return t 
+			}
+		}
+	})
+</script>
+</html>
