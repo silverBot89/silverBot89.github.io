@@ -1,2 +1,2 @@
-# js_effect
+# css
 some javascript tips collection 
