@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+		* {
+			margin:0;
+			padding: 0;
+		}
+		body{
+			height:200vh;
+			background:#111;
+		}
+		section {
+			position:absolute;
+			width: 100%;
+			height: calc(80% - 200px);
+			background :#2abbff;
+		}
+		section .curve{
+			position:absolute;
+			bottom:-200px;
+			height:200px;
+			width:100%;
+			transform-origin: top;
+		}
+		section .curve img{
+			width:100%;
+			height:100%;
+		}
+	</style>
+</head>
+<body>
+	<section>
+		<span class="curve">
+			<img src='curve.png'></img>
+		</span>
+	</section>
+	<script type="text/javascript">
+		var sroll = document.querySelector('.curve');
+		window.addEventListener('scroll',()=>{
+			let offset = Math.max(1 + window.scrollY/-500 ,0);
+			sroll.style.transform = `scaleY(${offset})`;
+		})
+	</script>
+</body>
+</html>
