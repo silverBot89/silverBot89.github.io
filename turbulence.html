@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>filter</title>
+	<meat charset="UTF-8" />
+	<style type="text/css">
+		body {
+		  margin: 0;
+		  height: 356px;
+		  width: 634px;
+		}
+
+		.bg {
+		  position: absolute;
+		  top: 0;
+		  left: 0;
+		  height: 356px;
+		  width: 634px;
+		  background-image: url("water.jpg");
+		  background-size: cover;
+		}
+
+		.bg .water {
+		  position: absolute;
+		  background-image: url("water.png");
+		  background-size: cover;
+		  top:0;
+		  left:0;
+		  height: 100%;
+		  width: 100%;
+		  filter: url("#turbulence");
+		}
+	</style>
+</head>
+<body>
+	<div class="bg">
+		<div class="water"></div>
+	</div>
+	<svg>
+      <filter id="turbulence" x="0" y="0" width="100%" height="100%">
+        <feTurbulence id="sea-filter" numOctaves="3" seed="3" baseFrequency="0.02 0.05"></feTurbulence>
+        <feDisplacementMap scale="20" in="SourceGraphic"></feDisplacementMap>
+        <animate xlink:href="#sea-filter" attributeName="baseFrequency" dur="60s" 
+        keyTimes="0;0.5;1" values="0.02 0.06;0.04 0.08;0.02 0.06" repeatCount="indefinite"/>
+      </filter>
+    </svg>
+</body>
+</html>
