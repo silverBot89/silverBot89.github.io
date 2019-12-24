@@ -17,8 +17,9 @@
 			overflow: hidden;
 			background:#1897ff;
 			-webkit-clip-path:polygon(0 0 ,55% 0 ,45% 100% ,0% 100%);
+			clip-path: url("#shape");
 		}
-		body h2,{}
+		body h2, 
 		.cont h2{
 			position: absolute;
 			top:calc(50% - 150px);
@@ -37,6 +38,13 @@
 	<div class="cont">
 		<h2 class="layer">color test</h2>
 	</div>
+	<svg width='0' height='0'>
+		<defs>
+			<clipPath id="shape" clipPathUnits="objectBoundingBox">
+				<polygon points="0 0,0.55 0,0.45 1,0 1" />
+			</clipPath>
+		</defs>
+	</svg>
 	<script type="text/javascript">
 		document.addEventListener('mousemove',tmove);
 		function tmove(e) {
