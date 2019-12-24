@@ -1,2 +1,2 @@
 # css
-some javascript tips collection 
+personal blog
