@@ -56,7 +56,7 @@
 			let link = document.createElement("span")
 			link.innerText = name
 			link.onclick = (e)=>{
-				frame.src = e.srcElement+".html"
+				frame.src = e.srcElement.innerText+".html"
 			}
 			li.append(link)
 			ul.append(li)
