@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>roll corner</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="corner.css">
+</head>
+<body>
+	<div class="contain">
+		<div class="form">
+			<div class="corner"></div>
+	<!-- 		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,.</p> -->
+		</div>
+	</div>
+	<script type="text/javascript">
+		var corn = document.querySelector(".corner")
+		var form = document.querySelector(".form")
+		form.addEventListener('mousemove',(e)=>{
+			if(e.offsetX>90||e.offsetY>90){
+				corn.style.width=corn.style.height=90+"px"
+				corn.style.left = corn.style.top=-4+"px"	
+			}
+			else{
+				corn.style.width=corn.style.height=e.pageY-form.offsetTop+'px'
+			}		
+		})
+	</script>
+</body>
+</html>

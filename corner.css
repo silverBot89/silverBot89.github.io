@@ -1,0 +1,32 @@
+*{
+	margin:0;
+	padding:0;
+	box-sizing:border-box;
+}
+.form{
+	width:405px;
+	height:200px;
+	background:#2f2f2f;
+	position:relative;
+	overflow:hidden;
+	margin:30px auto;
+}
+.corner{
+	position: absolute;
+	background:-webkit-linear-gradient(45deg, #2e2e2e 24%, #5F5F5F 40%,#6f6f6f 43%,#5F5F5F 46%,#2F2F2F 50%,#fff 50%,#fff);
+	width:90px;
+	height:90px;
+	border-radius:0 0 0px 90px / 0 0 0 30px;
+	transform:rotate(-90deg);
+	left:-4px;
+	top:-4px;
+	overflow: hidden;
+	box-shadow:5px 2px 8px black;
+	transition:all 0.3s ease-out 0s;
+}
+
+.corner:hover{
+	left:calc(100%-4px);
+	width:20px;
+	height:
+}
