@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="ring.css" />
+</head>
+<body>
+	<div class="outside"></div>
+	<script type="text/javascript">
+		var wave = document.querySelector(".outside")
+		wave.addEventListener('animationend',()=>{
+			wave.classList.remove('move')
+		})
+		window.addEventListener("click",(e)=>{
+			let [x,y] =	[e.clientX,e.clientY]
+			wave.style.left = x-5+'px'
+			wave.style.top = y-5+'px'
+			wave.classList.add('move')
+		})
+	</script>
+</body>
+</html>
