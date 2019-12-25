@@ -9,30 +9,58 @@
 			padding:0;
 			box-sizing:border-box;
 		}
-		body{
+		.contain{
 			width:100%;
-			display:flex;
-			display:-webkit-flex;
-			flex-direction:column;
-			justify-content:center;
 			
 		}
-		body *{
+		.uu{
+			display:-webkit-flex;
+			display:flex;
+			flex-direction:column;
+			justify-content:center;
+		}
+		.uu li{
 			display:-webkit-flex;
 			display:flex;
 			justify-content:center;
+		}
+		.uu li a {
 			font-size:2em;
+		}
+		.uu li span{
+			cursor:pointer;
+			color:lime;
+			font-size:2em;
+			box-shadow:0px 2px 1px lime;
+		}
+		#show{
+			border: none;
+			width:100vw;
+			height:500px;
 		}
 	</style>
 </head>
 <body>
-	<h1>MY Blog</h1>
-	<a href="./load.html">load</a>
-	<a href="./login.html">login</a>
-	<a href="./mp_3.html">mp_3</a>
-	<a href="./mp_02.html">mp_02</a>
-	<a href="./preserve3d.html">preserve3d</a>
-	<a href="./turblence.html">turblence</a>
-	<a href="./water.html">water</a>
+	<div class="contain">
+		<ul class="uu">
+			<li><a href="./home.html">HOME</a></li>
+		</ul>
+		<iframe id="show"></iframe>
+	</div>
+	<script type="text/javascript">
+		var pages = ['corner','dropee','paralex','load','turbulence','water']
+		var frame = document.querySelector('#show')
+		var ul = document.querySelector(".uu")
+		for(name of pages){
+			let li = document.createElement("li")
+			let link = document.createElement("span")
+			link.innerText = name
+			link.onclick = ()=>{
+				frame.src = name+".html"
+			}
+			li.append(link)
+			ul.append(li)
+		}
+	</script>
 </body>
 </html>
