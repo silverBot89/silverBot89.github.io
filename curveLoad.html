@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="home.css">
+	<meta charset="utf-8">
+	<style type="text/css">
+		.contain{
+			position:absolute;
+			top:50%;
+			left:50%;
+			transform:translate(-50%,-50%);
+			display:flex;
+			display:-webkit-flex;
+			justify-content:center;
+			flex-direction:row;
+		}
+		.load{
+			width:500px;
+			height:50px;
+			border:1px solid lime;
+			background-size:500px 50px;
+			background-image:-webkit-linear-gradient(0deg ,lime,lime);
+			background-repeat: no-repeat;
+			background-position:-500px 0px;
+			animation:loading 3s linear;
+			animation-fill-mode: forwards;
+		}
+		.curve{
+			width:100px;
+			height:50px;
+			background-size:100px 50px;
+			background-image:-webkit-linear-gradient(0deg ,lime,lime);
+			background-repeat: no-repeat;
+			background-position:-100px 0px;
+
+		}
+		.right{
+			transform-origin:right top;
+			transform:skewY(40deg) ;
+		}
+		.left{
+			transform-origin:left top;
+			transform: skewY(-40deg);
+		}
+		.a1{
+			animation:loading 1s linear 3s forwards;
+		}
+		.a2{
+			animation:loading 1s linear 4s forwards;
+		}
+		.a3{
+			animation:loading 1s linear 5s forwards;
+		}
+		.a4{
+			animation:loading 1s ease-out 6s forwards;
+		}
+		@keyframes loading{
+			100%{
+				background-position:0px 0px;
+			}
+		}
+	</style>
+</head>
+<body>
+	<div class="contain">
+		<div class="load"></div>
+		<div class="curve left a1"></div>
+		<div class="curve right a2"></div>
+		<div class="curve left a3"></div>
+		<div class="curve right a4"></div>
+	</div>
+</body>
+</html>
