@@ -11,13 +11,15 @@
 		}
 		.contain{
 			width:100%;
-			
+			display:flex;
+                        flex-wrap:wrap;
 		}
 		.uu{
 			display:-webkit-flex;
 			display:flex;
 			flex-direction:column;
 			justify-content:center;
+                        flex-grow:1;
 		}
 		.uu li{
 			display:-webkit-flex;
@@ -35,18 +37,22 @@
 		}
 		#show{
 			border: none;
-			width:100vw;
-			height:500px;
+			width:80vw;
+			height:100vh;
+                        flex-grow:2;
 		}
+                
 	</style>
 </head>
 <body>
-	<div class="contain">
+	
+        <div class="contain">
 		<ul class="uu">
 			<li><a href="./home.html">HOME</a></li>
 		</ul>
 		<iframe id="show"></iframe>
-	</div>
+	
+        </div>
 	<script type="text/javascript">
 		var pages = ['corner','dropee','paralex','load','turbulence','water','curveLoad','ring','preserve3d','card_game']
 		var frame = document.querySelector('#show')
